@@ -1,0 +1,45 @@
+.nav-link {
+    font-size: 15px;
+}
+
+.menu {
+    background-color: black;
+}
+
+.navbar-brand {
+    color: #FCF6DE
+}
+
+.nav-link {
+    color: #909292;
+}
+
+.nav-link:hover {
+    color: #FCF6DE
+}
+
+.search-form input {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.card-brand {
+    font-size: 13px;
+}
+
+.bg-e2 {
+    background-color: #E2E2E2;
+}
+
+.bucket {
+    background-color: black;
+    color: white;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
