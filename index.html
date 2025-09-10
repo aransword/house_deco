@@ -98,12 +98,36 @@
         <h5 class="fw-bold m-2">장바구니</h3>
         <div class="bucket row gx-5" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
         <h5 class="fw-bold m-2">합계</h3>
-        <p><span id="sum"></span>원</p>
-        <button class="btn btn-dark">구매하기</button>
+        <p><span id="sum"></span> 원</p>
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#purchaseModal">구매하기</button>
+    </div>
+
+
+
+    <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="purchaseModalLabel">구매 정보 입력</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="fw-bold m-2">이름</h5>
+                    <input id="name">
+                    <h5 class="fw-bold m-2">연락처</h5>
+                    <input id="phone">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark">입력완료</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         var bucket = $(".bucket");
+        var sum = $('#sum');
         var empty = true;
         var currBucket = []
 
@@ -113,24 +137,40 @@
         initBucket();
 
         function sumPrice() {
-            
+            var price = 0;
+            if(empty) {
+                console.log('비었음')
+                sum.html(price);
+            }
+            else {
+                console.log('동작')
+                currBucket.forEach((id) => {
+                    allData.forEach((data) => {
+                        if(data.id == id) {
+                            price = price + (data.price * document.getElementById('cnt' + id).value)
+                        }
+                    })
+                })
+                sum.html(price);
+            }
         }
+        sumPrice();
 
         function dragoverHandler(e) {
             e.preventDefault();
         }
 
         function dropHandler(e) {
-            if(empty) {
-                bucket.html('');
-                empty = false;
-            }
             e.preventDefault();
             const buy = e.dataTransfer.getData("key");
             addBucket(buy);
         }
 
         function addBucket(id) {
+            if(empty) {
+                bucket.html('');
+                empty = false;
+            }
             var already = false;
             
             currBucket.forEach((data) => {
@@ -160,22 +200,30 @@
                                 </div>`)
 
                 document.getElementById('cnt' + item.id).addEventListener('input', (e) => {
+                    sumPrice();
                     if(e.target.value < 1) {
                         document.getElementById('bucket' + id).remove();
                         currBucket = currBucket.filter(j => j != id);
-                        if(currBucket.length < 1)
+                        if(currBucket.length < 1) {
                             initBucket();
+                            empty = true;
+                        }
+                            
                     }
                 })
             }
             else {
                 document.getElementById('cnt' + id).value++;
             }
+            sumPrice();
             
         }
 
         
     </script>
+
+    
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
