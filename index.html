@@ -21,7 +21,7 @@
     </nav>
 
     <form class="search-form">
-        <input placeholder="검색어 입력">
+        <input placeholder="검색어 입력" id="search">
     </form>
 
     <br>
@@ -33,9 +33,10 @@
 
     <script>
         var rowDiv = $('#merch');
+        var allData;
 
-        $.get('store.json').done((a) => {
-            a.products.forEach((data) => {
+        function renderItem(items) {
+            items.forEach((data) => {
                 rowDiv.append(`<div class="col-3">
                                     <div class=card>
                                         <img src="./img/${data.photo}" class="card-img-top">
@@ -48,6 +49,43 @@
                                     </div>
                                </div>`);
             })
+        }
+
+        function deleteItem() {
+            rowDiv.html('');
+        }
+
+        $.get('store.json').done((a) => {
+            allData = a.products;
+            renderItem(allData);
+        })
+
+        document.getElementById('search').addEventListener('input', (e) => {
+            if(e.target.value == '') {
+                deleteItem();
+                renderItem(allData);
+            }
+            else {
+                let searchData = [];
+                allData.forEach((i) => {
+                    var data = JSON.parse(JSON.stringify(i));
+                    var find = false;
+                    if(i.title.includes(e.target.value)) {
+                        data.title = data.title.replace(e.target.value, '<span style="background:yellow">' + e.target.value + '</span>');
+                        searchData.push(data);
+                        find = true;
+                    }
+                    if(i.brand.includes(e.target.value)) {
+                        data.brand = data.brand.replace(e.target.value, '<span style="background:yellow">' + e.target.value + '</span>');
+                        if(!find) {
+                            searchData.push(data);
+                        }
+                    }
+                })
+                deleteItem();
+                renderItem(searchData);
+            }
+            console.log(allData);
         })
     </script>
 
