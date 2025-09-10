@@ -1,3 +1,8 @@
+body {
+    background-color: #F4F4F4;
+    position: relative;
+}
+
 .nav-link {
     font-size: 15px;
 }
@@ -42,4 +47,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.reciept {
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 400px;
+    background-color : #eee;
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
 }
